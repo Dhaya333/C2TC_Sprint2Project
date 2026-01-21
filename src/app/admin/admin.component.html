@@ -1,0 +1,105 @@
+<div class="admin-container">
+  <div class="header">
+    <h1>Nexora Mall Admin</h1>
+    <p class="subtitle">Manage admin users and permissions</p>
+  </div>
+
+  <div class="form-card">
+    <h3>{{ isEdit ? 'Edit Admin' : 'Add New Admin' }}</h3>
+    <form (ngSubmit)="submit()">
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+          <input matInput [(ngModel)]="form.username" name="username" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Full Name</mat-label>
+          <input matInput [(ngModel)]="form.fullName" name="fullName" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" [(ngModel)]="form.email" name="email" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" [(ngModel)]="form.password" name="password" required>
+        </mat-form-field>
+      </div>
+
+      <div class="form-actions">
+        <button mat-raised-button color="primary" type="submit">
+          <mat-icon></mat-icon>
+          {{ isEdit ? 'Update Admin' : 'Create Admin' }}
+        </button>
+        <button mat-stroked-button type="button" (click)="resetForm()">
+          <mat-icon></mat-icon>
+          Clear
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">
+      <h3>Admin List</h3>
+      <span class="admin-count">{{ admins.length }} admin(s)</span>
+    </div>
+
+    <div class="table-container">
+      <table mat-table [dataSource]="admins" class="admin-table">
+
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let admin">
+            <span class="id-badge">{{ admin.id }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="username">
+          <th mat-header-cell *matHeaderCellDef>Username</th>
+          <td mat-cell *matCellDef="let admin">
+            <span>{{ admin.username }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="fullName">
+          <th mat-header-cell *matHeaderCellDef>Full Name</th>
+          <td mat-cell *matCellDef="let admin">{{ admin.fullName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let admin">
+            <span class="email">{{ admin.email }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let admin">
+            <div class="action-buttons">
+              <button mat-button color="primary" (click)="edit(admin)">
+                Edit
+              </button>
+              <button mat-button color="warn" (click)="deleteAdmin(admin.id!)">
+                Delete
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+      </table>
+
+      <div *ngIf="admins.length === 0" class="no-data">
+        <mat-icon>inbox</mat-icon>
+        <p>No admins found</p>
+        <span>Create your first admin using the form above</span>
+      </div>
+    </div>
+  </div>
+</div>
